@@ -16,6 +16,12 @@
       "^.+\\.(css|less|scss)$": "identity-obj-proxy"
     }
   },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "author": "Jani Aalto",
   "license": "ISC",
   "dependencies": {
