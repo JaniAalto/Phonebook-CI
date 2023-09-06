@@ -13,6 +13,7 @@ module.exports = {
     "sourceType": "module",
     "ecmaVersion": "latest"
   },
+  "plugins": ["react"],
   "rules": {
     "indent": [
       "error",
@@ -29,6 +30,8 @@ module.exports = {
     ],
     "arrow-spacing": [
       "error", { "before": true, "after": true }
-    ]
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
   }
 }
