@@ -29,6 +29,33 @@ jobs:
       - name: Run unit tests
         run: npm run test
 
+      - name: Render deployment
+        if: ${{ github.event_name == 'push' && !contains(github.event.commits[0].message, '#skip') }}
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with: 
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_TOKEN }}
+          
+      - name: Discord job success
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          text: Job succeeded.
+          description: ${{ github.event_name }} at ${{ github.repository }}
+          details: by ${{ github.event.commits[0].committer.username }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: Discord job failure
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: error
+          text: Job failed!
+          description: ${{ github.event_name }} at ${{ github.repository }}
+          details: ${{ github.event.commits[0].id }} by ${{ github.event.commits[0].committer.username }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
