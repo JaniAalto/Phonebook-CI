@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import dataTransfer from './services/DataTransfer'
+import React from 'react'
 
 
 const Filter = ({ filter, handleFilterChange, setFilter }) => {
@@ -9,7 +10,7 @@ const Filter = ({ filter, handleFilterChange, setFilter }) => {
   )
 }
 
-const PersonForm = ({ addName, newName, newNumber, handleNameChange, handleNumberChange }) => {
+export const PersonForm = ({ addName, newName, newNumber, handleNameChange, handleNumberChange }) => {
   return (
     <form onSubmit={addName}>
       <div>Name: <input id="nameInput" value={newName} onChange={handleNameChange} /></div>
@@ -20,8 +21,6 @@ const PersonForm = ({ addName, newName, newNumber, handleNameChange, handleNumbe
 }
 
 export const DisplayedList = ({ names, numbers, ids, filterString, removeNumber }) => {
-  //console.log("names, numbers, ids", names, numbers, ids)
-
   let index = 0
   const objectList = names.map(person => {
     const nameObject = {
@@ -29,20 +28,20 @@ export const DisplayedList = ({ names, numbers, ids, filterString, removeNumber 
       number: numbers[index],
       id: ids[index]
     }
-    //console.log("added", nameObject)
     index++
     return nameObject
   })
-  //console.log("objectList", objectList)
 
   const filteredList = objectList.filter(person => person.name.toLowerCase().startsWith(filterString))
-  //console.log("filteredList", filteredList)
 
   const listToShow = filteredList.map(person => {
-    return (<p key={person.id}>{person.name} {person.number}
-      <button onClick={() => removeNumber(person.name, person.id)}>delete</button></p>)
+    return (
+      <p key={person.id}>
+        {person.name} {person.number}
+        <button onClick={() => removeNumber(person.name, person.id)}>delete</button>
+      </p>
+    )
   })
-  //console.log("listToShow", listToShow)
 
   return listToShow
 }
